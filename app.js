@@ -2,11 +2,15 @@
 'use strict';
 
 // set base url definition for API (random dog image generator)
-let url = 'https://dog.ceo/api/breeds/image/random';
+// https://dog.ceo/api/breed/hound/images/random
+let url1 = 'https://dog.ceo/api/breed/';
+let url2 = '/images/random';
 
-// get dog image through fetching URL. ex: "https://dog.ceo/api/breeds/image/random/3"
-function getDogImages(dogNumber) {
-    let dogURL= url + '/' + dogNumber; // add "/dogNumber" to url
+// get dog image through fetching URL
+function getDogImages(dogBreed) {
+    // define dogURL
+    let dogURL= url1 + dogBreed + url2; 
+    // fetch dog images from API URL
     return fetch(dogURL) // fetch returns promise
     // convert response to json for readable format
     // (promise method. response is a parameter (url). doesn't have to be called "response". just an argument of a function (this is a function =>))
@@ -19,13 +23,18 @@ function getDogImages(dogNumber) {
 function displayResults(responseJson) {
     console.log(responseJson);
     //replace the existing image with the new one
-    for (let i=0; i<responseJson.message.length; i++) {
         // replace placeholder images with dog images
-        $('.results-img-' + [i+1]).replaceWith(
-        `<img src="${responseJson.message[i]}" class="results-img">`
+    if (responseJson.code == 404) {
+        $('.results-img-1').replaceWith(`<p>${responseJson.message}</p>`)
+    }
+
+    else {
+        $('.results-img-1').replaceWith(
+        `<img src="${responseJson.message}" class="results-img-1">`
         )
         //display the results section
-        $('.results-img-' + [i+1]).removeClass('hidden');
+        $('.image-title').removeClass('hidden')
+        $('.results-img-1').removeClass('hidden');
     }
 }
 
@@ -35,9 +44,9 @@ function watchForm() {
         // prevent default action of form submit (prevent from submitting form and just perform action below)
         event.preventDefault();
         // get number of images entered by user
-        const dogNumber = $('#dogNum').val();
+        const dogBreed = $('#dogBreed').val();
         // get dog images and display for user
-        getDogImages(dogNumber)
+        getDogImages(dogBreed)
             .then(response => {
                 displayResults(response);
         });
