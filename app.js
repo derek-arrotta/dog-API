@@ -17,13 +17,16 @@ function getDogImages(dogNumber) {
 
 // display results by setting "responseJson" variable to "response" url from above
 function displayResults(responseJson) {
-  console.log(responseJson);
-  //replace the existing image with the new one
-  $('.results-img').replaceWith(
-    `<img src="${responseJson.message}" class="results-img">`
-  )
-  //display the results section
-  $('.results').removeClass('hidden');
+    console.log(responseJson);
+    //replace the existing image with the new one
+    for (let i=0; i<responseJson.message.length; i++) {
+        // replace placeholder images with dog images
+        $('.results-img-' + [i+1]).replaceWith(
+        `<img src="${responseJson.message[i]}" class="results-img">`
+        )
+        //display the results section
+        $('.results-img-' + [i+1]).removeClass('hidden');
+    }
 }
 
 // when form is submitted ("generate dog pic(s)!" is pressed), run getDogImages function
