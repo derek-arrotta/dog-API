@@ -17,12 +17,18 @@ function getDogImages(dogNumber) {
 
 // display results by setting "responseJson" variable to "response" url from above
 function displayResults(responseJson) {
+    // print json dog image url info to console
     console.log(responseJson);
-    //replace the existing image with the new one
+    // make sure images all have class hidden before trying to display (almost like a reset function where old dog images are cleared out) 
+    for (let i=1; i<=50; i++) {
+        $('.results-img-' + [i]).addClass('hidden');
+    }
+    
+    //replace the existing images with new ones
     for (let i=0; i<responseJson.message.length; i++) {
         // replace placeholder images with dog images
         $('.results-img-' + [i+1]).replaceWith(
-        `<img src="${responseJson.message[i]}" class="results-img">`
+        `<img src="${responseJson.message[i]}" class="results-img-` + [i+1] + '" >'
         )
         //display the results section
         $('.results-img-' + [i+1]).removeClass('hidden');
