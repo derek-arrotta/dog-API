@@ -11,6 +11,7 @@ function getDogImages(dogNumber) {
     // convert response to json for readable format
     // (promise method. response is a parameter (url). doesn't have to be called "response". just an argument of a function (this is a function =>))
         .then(response => response.json())
+        .then(responseJson => displayResults(responseJson))
     // if error happens, give alert message
         .catch(error => alert('Something went wrong. Try again later.'));
 }
@@ -19,19 +20,17 @@ function getDogImages(dogNumber) {
 function displayResults(responseJson) {
     // print json dog image url info to console
     console.log(responseJson);
-    // make sure images all have class hidden before trying to display (almost like a reset function where old dog images are cleared out) 
-    for (let i=1; i<=50; i++) {
-        $('.results-img-' + [i]).addClass('hidden');
-    }
-    
+    // empty old results
+    $('.results').empty();
+
     //replace the existing images with new ones
     for (let i=0; i<responseJson.message.length; i++) {
         // replace placeholder images with dog images
-        $('.results-img-' + [i+1]).replaceWith(
-        `<img src="${responseJson.message[i]}" class="results-img-` + [i+1] + '" >'
+        $('.results').append(
+        `<img src="${responseJson.message[i]}" class="results-img">`
         )
         //display the results section
-        $('.results-img-' + [i+1]).removeClass('hidden');
+        $('.results').removeClass('hidden');
     }
 }
 
@@ -43,10 +42,7 @@ function watchForm() {
         // get number of images entered by user
         const dogNumber = $('#dogNum').val();
         // get dog images and display for user
-        getDogImages(dogNumber)
-            .then(response => {
-                displayResults(response);
-        });
+        getDogImages(dogNumber);
     });
 }
 
